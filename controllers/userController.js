@@ -1,3 +1,7 @@
+const User = require('./../models/userModel');
+const catchAsync = require('./../utils/catchAsync');
+// const AppError = require('./../utils/appError');
+
 exports.checkID = (req, res, next, val) => {
   console.log(`User id = ${val}`);
   if (req.params.id * 1 > users.length) {
@@ -10,12 +14,17 @@ exports.checkID = (req, res, next, val) => {
 };
 
 // Get all Users
-exports.getAllUsers = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet refined.'
+exports.getAllUsers = catchAsync(async (req, res, next) => {
+  const users = await User.find();
+
+  res.status(200).json({
+    status: 'success',
+    results: users.length,
+    data: {
+      users
+    }
   });
-};
+});
 // Get a specific User
 exports.getUser = (req, res) => {
   res.status(500).json({
