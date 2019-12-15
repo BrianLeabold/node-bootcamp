@@ -21,6 +21,7 @@ app.use(express.static(`${__dirname}/public`));
 app.use((req, res, next) => {
   ///TODO:Remove Console Log
   // console.log('Hello from the middleware');
+  // console.log(req.headers);
   next();
 });
 
