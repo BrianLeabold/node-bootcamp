@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 const AppError = require('./utils/appError');
 const gobalErrorHandler = require('./controllers/errorController');
 
@@ -12,7 +13,10 @@ const usersRouter = require('./routes/userRoutes');
 // 1) Global Middleware
 ///TODO:Remove Console Log
 // console.log(process.env.NODE_ENV);
+// Set security HTTP Headers
+app.use(helmet());
 
+//Development Logging
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
@@ -23,10 +27,10 @@ const limiter = rateLimit({
   message:
     'You have made too many request from this IP address. Please try again later.'
 });
-
 app.use('/api', limiter);
-
-app.use(express.json());
+// body-parser
+app.use(express.json({ limit: '10kb' }));
+// Serving static files
 app.use(express.static(`${__dirname}/public`));
 app.use((req, res, next) => {
   ///TODO:Remove Console Log
@@ -35,8 +39,10 @@ app.use((req, res, next) => {
   next();
 });
 
+//Test Middleware TODO: remove prior to deployment
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
+  //console.log(req.headers);
   next();
 });
 
