@@ -22,10 +22,11 @@ const createSendToken = (user, statusCode, res) => {
   };
   if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
 
-  res.cookie('jwt', token, cookieOptions);
+  res.cookie('consultbrianjwt', token, cookieOptions);
 
-  // Remove password from output
+  // Remove password and role from output
   user.password = undefined;
+  user.role = undefined;
   res.status(statusCode).json({
     status: 'success',
     token,
