@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
 const AppError = require('./utils/appError');
 const gobalErrorHandler = require('./controllers/errorController');
 
@@ -8,13 +9,22 @@ const toursRouter = require('./routes/tourRoutes');
 const servicesRouter = require('./routes/servicesRoutes');
 const usersRouter = require('./routes/userRoutes');
 
-// 1) Middleware
+// 1) Global Middleware
 ///TODO:Remove Console Log
 // console.log(process.env.NODE_ENV);
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+// Rate Limiter
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message:
+    'You have made too many request from this IP address. Please try again later.'
+});
+
+app.use('/api', limiter);
 
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
