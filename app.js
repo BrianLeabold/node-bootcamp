@@ -12,6 +12,7 @@ const app = express();
 const toursRouter = require('./routes/tourRoutes');
 const servicesRouter = require('./routes/servicesRoutes');
 const usersRouter = require('./routes/userRoutes');
+const reviewsRouter = require('./routes/reviewRoutes');
 
 // 1) Global Middleware
 ///TODO:Remove Console Log
@@ -62,6 +63,7 @@ app.use((req, res, next) => {
 app.use('/api/v1/tours', toursRouter);
 app.use('/api/v1/services', servicesRouter);
 app.use('/api/v1/users', usersRouter);
+app.use('/api/v1/reviews', reviewsRouter);
 
 app.all('*', (req, res, next) => {
   next(
