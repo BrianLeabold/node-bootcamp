@@ -22,6 +22,7 @@ const reviewSchema = new mongoose.Schema(
     },
     tour: {
       type: mongoose.Schema.ObjectId,
+      ref: 'Tour',
       required: [true, 'Review must belong to a tour.']
     }
   },
@@ -35,11 +36,11 @@ reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
 
 reviewSchema.pre(/^find/, function(next) {
   // this.populate({
-  //   path: 'tour',
+  //   path: 'user',
   //   select: 'name'
   // }).populate({
-  //   path: 'user',
-  //   select: 'name photo'
+  //   path: 'tour',
+  //   select: 'name'
   // });
 
   this.populate({
@@ -52,3 +53,7 @@ reviewSchema.pre(/^find/, function(next) {
 const Review = mongoose.model('Review', reviewSchema);
 
 module.exports = Review;
+
+//       parent     child
+//        \/         \/
+// POST /tour/1234/reviews
