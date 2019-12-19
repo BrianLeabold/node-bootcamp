@@ -1,4 +1,5 @@
 const Services = require('./../models/servicesModel');
+const factory = require('./handlerFactory');
 
 //Get all Services
 exports.getAllServices = async (req, res) => {
@@ -112,16 +113,4 @@ exports.updateService = async (req, res) => {
   }
 };
 // Delete a specific service
-exports.deleteService = async (req, res) => {
-  try {
-    await Services.findByIdAndDelete(req.params.id);
-    res.status(204).json({
-      status: 'success'
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: `Unable to delete service: ${err}`
-    });
-  }
-};
+exports.deleteService = factory.deleteOne(Services);
