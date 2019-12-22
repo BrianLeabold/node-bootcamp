@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Please confirm your password'],
     validate: {
       // This only works on CREATE AND SAVE
-      validator: function(el) {
+      validator: function (el) {
         return el === this.password;
       },
       message: 'Your password and confirmPassword do not match'
@@ -52,8 +52,8 @@ const userSchema = new mongoose.Schema({
     select: false
   }
 });
-
-userSchema.pre('save', async function(next) {
+//==== Comment out this section of code to load test data ============//
+userSchema.pre('save', async function (next) {
   // Only runs if password was modified
   if (!this.isModified('password')) return next();
   // Hash password
@@ -63,26 +63,26 @@ userSchema.pre('save', async function(next) {
   next();
 });
 
-userSchema.pre('save', function(next) {
+userSchema.pre('save', function (next) {
   if (!this.isModified('password') || this.isNew) return next();
 
   this.passwordChangedAt = Date.now() - 1000;
   next();
 });
-
-userSchema.pre(/^find/, function(next) {
+//======================================//
+userSchema.pre(/^find/, function (next) {
   this.find({ active: true });
   next();
 });
 
-userSchema.methods.correctPassword = async function(
+userSchema.methods.correctPassword = async function (
   candidatePassword,
   userPassword
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
-userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
+userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
     const changedTimestamp = parseInt(
       this.passwordChangedAt.getTime() / 1000,
@@ -95,15 +95,13 @@ userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
   return false;
 };
 
-userSchema.methods.createResetPasswordToken = function() {
+userSchema.methods.createResetPasswordToken = function () {
   const resetToken = crypto.randomBytes(32).toString('hex');
 
   this.passwordResetToken = crypto
     .createHash('sha256')
     .update(resetToken)
     .digest('hex');
-  // TODO: REMOVE CONSOLE LOG AFTER TESTING COMPLETE
-  //console.log({ resetToken }, this.passwordResetToken);
 
   this.passwordResetExpires = Date.now() + 15 * 60 * 1000;
 
