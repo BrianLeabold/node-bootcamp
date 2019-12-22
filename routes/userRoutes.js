@@ -6,49 +6,29 @@ const userController = require('../controllers/userController');
 
 router.post('/signup', authController.signup);
 router.post('/login', authController.login);
-
 router.post('/forgotpassword', authController.forgotPassword);
 router.patch('/resetpassword/:token', authController.resetPassword);
 
-router.patch(
-  '/updateMyPassword',
-  authController.protect,
-  authController.updatePassword
-);
+// Protect all routes after this middleware
+router.use(authController.protect);
 
-router.patch('/updateMyInfo', authController.protect, userController.updateMe);
+router.patch('/updateMyPassword', authController.updatePassword);
+router.get('/me', userController.getMe, userController.getUser);
+router.patch('/updateMe', userController.updateMe);
+router.delete('/deleteMe', userController.deleteMe);
 
-router.delete(
-  '/deleteMyAccount',
-  authController.protect,
-  userController.deleteMe
-);
+// Restrict to admin role, all routes after this middleware
+router.use(authController.restrictTo('admin'));
 
 router
   .route('/')
-  .get(
-    authController.protect,
-    authController.restrictTo('admin'),
-    userController.getAllUsers
-  )
+  .get(userController.getAllUsers)
   .post(userController.createUser);
 
 router
   .route('/:id')
-  .get(
-    authController.protect,
-    authController.restrictTo('admin'),
-    userController.getUser
-  )
-  .patch(
-    authController.protect,
-    authController.restrictTo('admin'),
-    userController.updateUser
-  )
-  .delete(
-    authController.protect,
-    authController.restrictTo('admin'),
-    userController.deleteUser
-  );
+  .get(userController.getUser)
+  .patch(userController.updateUser)
+  .delete(userController.deleteUser);
 
 module.exports = router;

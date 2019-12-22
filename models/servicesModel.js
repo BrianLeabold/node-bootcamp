@@ -32,6 +32,12 @@ const servicesSchema = new mongoose.Schema({
   images: [String]
 });
 
+//Query Middleware
+servicesSchema.pre(/^find/, function (next) {
+  this.find();
+  next();
+});
+
 const Services = mongoose.model('Services', servicesSchema);
 
 module.exports = Services;
