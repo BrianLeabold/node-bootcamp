@@ -7,7 +7,8 @@ const handleCastErrorDB = err => {
 
 const handleDupFieldsDB = err => {
   const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
-  console.log(value);
+  // TODO: Remove
+  // console.log(value);
 
   const message = `Duplicate field value ${value}. Please use a different value.`;
   return new AppError(message, 400);
@@ -19,9 +20,6 @@ const handleValidationErrorDB = err => {
   const message = `${errors.join('. ')}`;
   return new AppError(message, 400);
 };
-
-// const handleJWTError = () =>
-//   new AppError('Invalid token: Please login again.', 401);
 
 const handleJWTError = () =>
   new AppError('Invalid authentication token. Please log in again!', 401);
@@ -38,6 +36,7 @@ const sendDevError = (err, res) => {
     message: err.message,
     error: err.stack
   });
+  // TODO: Remove
   //   console.log(err.stack);
 };
 const sendProdError = (err, res) => {
@@ -50,7 +49,8 @@ const sendProdError = (err, res) => {
   }
   // Programming or other unknown error: don't leak error details
   else {
-    console.log('ERROR:', err);
+    // TODO: Remove
+    // console.log('ERROR:', err);
     res.status(500).json({
       status: 'error',
       message: 'Opps, something went wrong. Please try again.'
