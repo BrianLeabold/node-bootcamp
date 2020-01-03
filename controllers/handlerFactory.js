@@ -2,7 +2,6 @@ const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const APIFeatures = require('./../utils/apiFeatures');
 
-// Delete a specific document
 exports.deleteOne = Model =>
   catchAsync(async (req, res, next) => {
     const doc = await Model.findByIdAndDelete(req.params.id);
@@ -15,7 +14,6 @@ exports.deleteOne = Model =>
     });
   });
 
-// Update a specific document
 exports.updateOne = Model =>
   catchAsync(async (req, res, next) => {
     const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
@@ -35,7 +33,6 @@ exports.updateOne = Model =>
     });
   });
 
-// Create a document
 exports.createOne = Model =>
   catchAsync(async (req, res, next) => {
     const doc = await Model.create(req.body);
@@ -47,8 +44,6 @@ exports.createOne = Model =>
       }
     });
   });
-
-// Get document
 
 exports.getOne = (Model, popOptions) =>
   catchAsync(async (req, res, next) => {

@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const cookieParser = require('cookie-parser');
 const AppError = require('./utils/appError');
 const gobalErrorHandler = require('./controllers/errorController');
 
@@ -14,6 +15,7 @@ const toursRouter = require('./routes/tourRoutes');
 const servicesRouter = require('./routes/servicesRoutes');
 const usersRouter = require('./routes/userRoutes');
 const reviewsRouter = require('./routes/reviewRoutes');
+const viewRouter = require('./routes/viewRoutes');
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
@@ -36,6 +38,8 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 // body-parser
 app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+app.use(cookieParser());
 // Data sanitization to prevent NOSQL Query injection
 app.use(mongoSanitize());
 // Data sanitization to prevent XSS atacks
@@ -55,27 +59,11 @@ app.use((req, res, next) => {
 //Test Middleware TODO: remove prior to deployment
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  //console.log(req.headers);
+  console.log(req.cookies);
   next();
 });
 //Routes
-app.get('/', (req, res) => {
-  res.status(200).render('base', {
-    tour: 'The Forest Hiker',
-    user: 'Brian'
-  });
-});
-app.get('/overview', (req, res) => {
-  res.status(200).render('overview', {
-    title: 'All Tours'
-  });
-});
-app.get('/tour', (req, res) => {
-  res.status(200).render('tour', {
-    title: 'The Forest Hiker Tour'
-  });
-});
-
+app.use('/', viewRouter);
 app.use('/api/v1/tours', toursRouter);
 app.use('/api/v1/services', servicesRouter);
 app.use('/api/v1/users', usersRouter);

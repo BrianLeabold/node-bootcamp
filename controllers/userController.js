@@ -1,7 +1,7 @@
 const User = require('./../models/userModel');
-const factory = require('./handlerFactory');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
+const factory = require('./handlerFactory');
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -16,24 +16,26 @@ exports.getMe = (req, res, next) => {
   next();
 };
 
-// Update a specific User
 exports.updateMe = catchAsync(async (req, res, next) => {
   // 1) Create error if user POSTs password data
   if (req.body.password || req.body.confirmPassword) {
     return next(
       new AppError(
-        'This route is not for password updates. Use /updateMyPassord',
+        'This route is not for password updates. Please use /updateMyPassword.',
         400
       )
     );
   }
+
   // 2) Filtered out unwanted fields names that are not allowed to be updated
   const filteredBody = filterObj(req.body, 'name', 'email');
+
   // 3) Update user document
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true,
     runValidators: true
   });
+
   res.status(200).json({
     status: 'success',
     data: {
@@ -51,12 +53,10 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
-//////////////////////////////////////////
-
 exports.createUser = (req, res) => {
   res.status(500).json({
     status: 'error',
-    message: 'This route does nothing. Use /signup instead'
+    message: 'This route is not defined! Please use /signup instead'
   });
 };
 
