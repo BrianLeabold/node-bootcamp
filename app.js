@@ -56,10 +56,10 @@ app.use((req, res, next) => {
   next();
 });
 
-//Test Middleware TODO: remove prior to deployment
+//Test Middleware TODO: remove console.log prior to deployment
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  console.log(req.cookies);
+  //console.log(req.cookies);
   next();
 });
 //Routes
