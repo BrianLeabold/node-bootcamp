@@ -1,9 +1,8 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const Tour = require('../models/tourModel');
-// const factory = require('./handlerFactory');
-//const User = require('../models/userModel');
+const Booking = require('../models/bookingModel');
+const factory = require('./handlerFactory');
 const catchAsync = require('../utils/catchAsync');
-// const AppError = require('../utils/appError');
 
 exports.getCheckouSession = catchAsync(async (req, res, next) => {
   // Get currently booked tour
@@ -34,3 +33,20 @@ exports.getCheckouSession = catchAsync(async (req, res, next) => {
     session
   });
 });
+
+exports.createBookingCheckout = catchAsync(async (req, res, next) => {
+  // This is only TEMPORARY, because it's UNSECURE: everyone can make bookings without paying
+  const { tour, user, price } = req.query;
+
+  if (!tour && !user && !price) return next();
+  await Booking.create({ tour, user, price });
+
+  res.redirect(req.originalUrl.split('?')[0]);
+});
+
+// - TODO: Implement views for these routes
+exports.createBooking = factory.createOne(Booking);
+exports.getBooking = factory.getOne(Booking);
+exports.getAllBookings = factory.getAll(Booking);
+exports.updateBooking = factory.updateOne(Booking);
+exports.deleteBooking = factory.deleteOne(Booking);
