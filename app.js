@@ -16,6 +16,7 @@ const servicesRouter = require('./routes/servicesRoutes');
 const usersRouter = require('./routes/userRoutes');
 const reviewsRouter = require('./routes/reviewRoutes');
 const viewRouter = require('./routes/viewRoutes');
+const bookingsRouter = require('./routes/bookingsRoutes');
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
@@ -68,6 +69,7 @@ app.use('/api/v1/tours', toursRouter);
 app.use('/api/v1/services', servicesRouter);
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/reviews', reviewsRouter);
+app.use('/api/v1/bookings', bookingsRouter);
 
 app.all('*', (req, res, next) => {
   next(
