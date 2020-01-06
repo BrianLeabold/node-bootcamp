@@ -66,3 +66,18 @@ exports.updateUserData = catchAsync(async (req, res, next) => {
         user: updatedUser
     });
 });
+
+// -TODO: implement
+exports.getForgotPasswordForm = (req, res) => {
+    res.status(200).render('forgotpassword', {
+        title: 'Forgot Your Password',
+
+    });
+};
+// -TODO: implement
+exports.getResetForm = (req, res) => {
+    res.status(200).render('resetpassword', {
+        title: 'Reset Your Password',
+
+    });
+};

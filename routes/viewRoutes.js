@@ -8,6 +8,10 @@ const router = expresss.Router();
 router.get('/', authController.isLoggedIn, viewController.getOverview);
 router.get('/tour/:slug', authController.isLoggedIn, viewController.getTour);
 router.get('/login', authController.isLoggedIn, viewController.getLoginForm);
+// Finish implementation TODO: ====
+router.get('/forgotpassword', viewController.getForgotPasswordForm);
+router.get('resetpassword', viewController.getResetForm);
+// ===========================
 router.get('/me', authController.protect, viewController.getAccount);
 
 router.post(
