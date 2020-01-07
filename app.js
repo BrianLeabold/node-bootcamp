@@ -19,6 +19,7 @@ const usersRouter = require('./routes/userRoutes');
 const reviewsRouter = require('./routes/reviewRoutes');
 const viewRouter = require('./routes/viewRoutes');
 const bookingsRouter = require('./routes/bookingsRoutes');
+const bookingController = require('./controllers/bookingController');
 
 app.enable('trust proxy');
 
@@ -45,6 +46,12 @@ const limiter = rateLimit({
     'You have made too many request from this IP address. Please try again later.'
 });
 app.use('/api', limiter);
+// Stripe webhook
+app.post(
+  '/webhook-checkout',
+  express.raw({ type: 'application/json' }),
+  bookingController.webhookCheckout
+);
 // body-parser
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));

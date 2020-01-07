@@ -17,7 +17,8 @@ router.get('resetpassword', viewController.getResetForm);
 router.get('/me', authController.protect, viewController.getAccount);
 router.get(
     '/my-tours',
-    bookingController.createBookingCheckout, authController.protect,
+    // bookingController.createBookingCheckout, 
+    authController.protect,
     viewController.getMyTours
 );
 
