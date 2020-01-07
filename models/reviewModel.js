@@ -73,14 +73,6 @@ reviewSchema.post('save', function () {
   this.constructor.calcAverageRatings(this.tour);
 });
 
-// findByIdAndUpdate
-// findByIdAndDelete
-// reviewSchema.pre(/^findOneAnd/, async function (next) {
-//   this.r = await this.findOne();
-//   console.log(this.r);
-//   next();
-// });
-
 reviewSchema.post(/^findOneAnd/, async function (doc) {
   await doc.constructor.calcAverageRatings(doc.tour);
 });

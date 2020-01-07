@@ -28,8 +28,6 @@ exports.getToursWithin = async (req, res, next) => {
       )
     );
   }
-  // TODO: remove before production deployment
-  // console.log(distance, lat, lng, unit);
   const tours = await Tour.find({
     startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
   });

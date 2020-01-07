@@ -8430,16 +8430,15 @@ function () {
             res = _context2.sent;
             if (res.data.status === 'success') location.assign('/login');
             (0, _alerts.showAlert)('success', 'Logged Out');
-            _context2.next = 12;
+            _context2.next = 11;
             break;
 
           case 8:
             _context2.prev = 8;
             _context2.t0 = _context2["catch"](0);
-            console.log(_context2.t0.response);
             (0, _alerts.showAlert)('error', 'Error logging out! Try again.');
 
-          case 12:
+          case 11:
           case "end":
             return _context2.stop();
         }
@@ -8956,14 +8955,13 @@ function () {
             form.append('name', document.getElementById('name').value);
             form.append('email', document.getElementById('email').value);
             form.append('photo', document.getElementById('photo').files[0]);
-            console.log(form);
-            _context.next = 9;
+            _context.next = 8;
             return (0, _updateSettings.updateSettings)(form, 'data');
 
-          case 9:
+          case 8:
             document.querySelector('.btn--save-settings').textContent = 'Save settings';
 
-          case 10:
+          case 9:
           case "end":
             return _context.stop();
         }

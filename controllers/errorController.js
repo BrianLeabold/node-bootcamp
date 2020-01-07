@@ -7,8 +7,6 @@ const handleCastErrorDB = err => {
 
 const handleDupFieldsDB = err => {
   const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
-  // TODO: Remove
-  // console.log(value);
 
   const message = `Duplicate field value ${value}. Please use a different value.`;
   return new AppError(message, 400);
@@ -38,8 +36,6 @@ const sendDevError = (err, req, res) => {
       message: err.message,
       error: err.stack
     });
-    // TODO: Remove
-    //   console.log(err.stack);
   } else {
     // Rendered to client
     res.status(err.statusCode).render('error', {
@@ -71,7 +67,6 @@ const sendProdError = (err, req, res) => {
   // B) RENDERED WEBSITE
   // A) Operational, trusted error: send message to client
   if (err.isOperational) {
-    console.log(err);
     return res.status(err.statusCode).render('error', {
       title: 'Something went wrong!',
       msg: err.message

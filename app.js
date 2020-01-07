@@ -7,6 +7,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 const AppError = require('./utils/appError');
 const gobalErrorHandler = require('./controllers/errorController');
 
@@ -51,16 +52,17 @@ app.use(
     whitelist: ['duration', 'ratingsAverage', 'difficulty', 'price']
   })
 );
+
+app.use(compression());
 // Serving static files
 app.use(express.static(`${__dirname}/public`));
 app.use((req, res, next) => {
   next();
 });
 
-//Test Middleware TODO: remove console.log prior to deployment
+//Test Middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  //console.log(req.cookies);
   next();
 });
 //Routes
